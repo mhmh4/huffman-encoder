@@ -1,0 +1,3 @@
+class HuffmanTree:
+    def __init__(self, pairs: dict):
+        ...
