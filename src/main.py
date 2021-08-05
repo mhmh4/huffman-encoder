@@ -2,7 +2,6 @@ from collections import Counter
 from sys import argv, exit
 
 from huffman_tree import HuffmanTree
-from node import Node
 
 
 def get_character_frequency(file) -> dict:
@@ -19,7 +18,8 @@ def main():
         exit(1)
     path = argv[1]
     freq = get_character_frequency(path)
-    print(freq)
+    ht = HuffmanTree(freq)
+
 
 # with open("output", "w") as f:
 #     ...
