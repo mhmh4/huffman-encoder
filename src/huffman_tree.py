@@ -1,32 +1,46 @@
+import heapq
+
 from node import Node
 
 
 class HuffmanTree:
 
-    def __init__(self, pairs):
-        self._sort_dict_by_values_desc(pairs)
-        self._nodes = self._create_nodes(pairs)
-        self.root = self._nodes[0]
-        self.root = self._build()
-        print(self.root)
+    def __init__(self, pairs: dict):
+        if len(pairs) == 0:
+            ...
 
-    def _sort_dict_by_values_desc(self, d: dict) -> None:
-        d = dict(sorted(d.items(), key=lambda x: x[1], reverse=True))
+        # sorts the dictionary by values descending
+        pairs = dict(sorted(pairs.items(), key=lambda x: x[1], reverse=True))
+
+        self._nodes = self._create_nodes(pairs)
+        self.references = [x for x in self._nodes]
+        print(self._nodes)
+        self.root = self._build()
+        a = self.get_table()
+        print(a)
+
+    def get_table(self):
+        result = {}
+        def traverse(node, path=""):
+            if node:
+                traverse(node.left, path=(path + "0"))
+                if node.char:
+                    result[node.char] = path
+                traverse(node.right, path=(path + "1"))
+            return result
+        traverse(self.root)
+        return result
 
     def _build(self) -> None:
+        heapq.heapify(self._nodes)
         while len(self._nodes) > 1:
-            # a = self._nodes[-1].freq
-            # b = self._nodes[-2].freq
-            a = self._nodes.pop()
-            b = self._nodes.pop()
-            combined_freq = a.freq + b.freq
-            n = Node(freq=combined_freq, left=a, right=b)
+            a = heapq.heappop(self._nodes)
+            b = heapq.heappop(self._nodes)
+            n = Node(freq=(a.freq + b.freq))
+            n.left = a
+            n.right = b
             self._nodes.insert(0, n)
         return self._nodes[0]
 
     def _create_nodes(self, pairs: dict) -> list:
-        nodes = []
-        for k, v in pairs.items():
-            n = Node(k, v)
-            nodes.append(n)
-        return nodes
+        return list(Node(k, v) for k, v in pairs.items())

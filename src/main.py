@@ -12,14 +12,15 @@ def get_file_char_freq(file) -> dict:
     return c
 
 def main():
-    if len(argv) < 2:
-        print("Error: specify a file path to be encoded")
-        exit(1)
-    path = argv[1]
+    # if len(argv) < 2:
+    #     print("Error: specify a file path to be encoded")
+    #     exit(1)
+    # path = argv[1]
+    path = "src/input.txt"
     freq = get_file_char_freq(path)
     ht = HuffmanTree(freq)
-    print(ht)
-    print(ht.root.left)
+    # print(ht)
+    # print(ht.root.left)
 
     # data = []
     # with open("src/input.txt", "r") as f:
@@ -45,46 +46,6 @@ def main():
     # with open("output.txt", "w") as f:
     #     f.write("hello\n")
 
-
-
-# with open("output", "w") as f:
-#     ...
-
-# d = dict(sorted(c.items(), key=lambda x: x[1], reverse=True))
-
-
-# nodes = []
-
-# for k, v in c.items():
-#     x = Node(k, v)
-#     nodes.append(x)
-
-# def f():
-#     a = nodes.pop()
-#     b = nodes.pop()
-#     total = a.freq + b.freq
-#     x = Node(freq=total, left=a, right=b)
-#     nodes.insert(0, x)
-
-# i = len(nodes)
-# while i != 0:
-#     f()
-#     i //= 2
-
-# for x in nodes:
-#     print(x)
-
-# root = nodes[0]
-
-
-# def inorder(root):
-#     if not root:
-#         return
-#     inorder(root.left)
-#     print(root.char, root.freq)
-#     inorder(root.right)
-
-# inorder(root)
 
 if __name__ == "__main__":
     main()

@@ -5,5 +5,8 @@ class Node:
         self.left = left
         self.right = right
 
+    def __lt__(self, other):
+        return self.freq < other.freq
+
     def __repr__(self):
         return f"Node({self.char=}, {self.freq=})"
