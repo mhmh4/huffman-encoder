@@ -6,20 +6,24 @@ from node import Node
 class HuffmanTree:
 
     def __init__(self, pairs: dict):
-        if len(pairs) == 0:
-            ...
+        self.nodes = self._create_nodes(pairs)
+        self.root = self._build_tree()
+        self.table = self._build_table()
 
-        # sorts the dictionary by values descending
-        pairs = dict(sorted(pairs.items(), key=lambda x: x[1], reverse=True))
+    def _create_nodes(self, pairs: dict) -> list:
+        return list(Node(k, v) for k, v in pairs.items())
 
-        self._nodes = self._create_nodes(pairs)
-        self.references = [x for x in self._nodes]
-        print(self._nodes)
-        self.root = self._build()
-        a = self.get_table()
-        print(a)
+    def _build_tree(self) -> Node:
+        heapq.heapify(self.nodes)
+        while len(self.nodes) > 1:
+            smallest_1 = heapq.heappop(self.nodes)
+            smallest_2 = heapq.heappop(self.nodes)
+            total_freq = smallest_1.freq + smallest_2.freq
+            n = Node(freq=total_freq, left=smallest_1, right=smallest_2)
+            heapq.heappush(self.nodes, n)
+        return self.nodes[0]
 
-    def get_table(self):
+    def _build_table(self) -> dict:
         result = {}
         def traverse(node, path=""):
             if node:
@@ -30,17 +34,3 @@ class HuffmanTree:
             return result
         traverse(self.root)
         return result
-
-    def _build(self) -> None:
-        heapq.heapify(self._nodes)
-        while len(self._nodes) > 1:
-            a = heapq.heappop(self._nodes)
-            b = heapq.heappop(self._nodes)
-            n = Node(freq=(a.freq + b.freq))
-            n.left = a
-            n.right = b
-            self._nodes.insert(0, n)
-        return self._nodes[0]
-
-    def _create_nodes(self, pairs: dict) -> list:
-        return list(Node(k, v) for k, v in pairs.items())
