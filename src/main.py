@@ -16,9 +16,12 @@ def main():
     #     print("Error: specify a file path to be encoded")
     #     exit(1)
     # path = argv[1]
+    f = open("src/input.txt")
     path = "src/input.txt"
     freq = get_file_char_freq(path)
     ht = HuffmanTree(freq)
+    a = ht.encode(f.read())
+    print(a)
     # print(ht)
     # print(ht.root.left)
 
