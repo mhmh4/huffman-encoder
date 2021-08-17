@@ -4,26 +4,37 @@ from sys import argv, exit
 from huffman_tree import HuffmanTree
 
 
-def get_file_char_freq(file) -> dict:
+def character_frequency(file_path: str) -> dict:
     c = Counter()
-    with open(file, "r") as f:
+    with open(file_path, "r") as f:
         for line in f:
             c += Counter(line)
     return c
 
+
+def ascii_string_to_binary(s: str) -> str:
+    result = ""
+    for char in s:
+        result += (bin(ord(char))[2:]).zfill(8)
+    return result
+
+
 def main():
     # if len(argv) < 2:
-    #     print("Error: specify a file path to be encoded")
+    #     print("Error: specify a file path")
     #     exit(1)
     # path = argv[1]
+
     f = open("src/input.txt")
     path = "src/input.txt"
-    freq = get_file_char_freq(path)
+    freq = character_frequency(path)
     ht = HuffmanTree(freq)
-    a = ht.encode(f.read())
+    text = f.read()
+    a = ht.encode(text)
     print(a)
-    # print(ht)
-    # print(ht.root.left)
+    b = ascii_string_to_binary(text)
+    print(b)
+    print(len(b))
 
     # data = []
     # with open("src/input.txt", "r") as f:
