@@ -52,7 +52,6 @@ def main():
     binary_huffman, table = ht.encode(message)
     new_num_bits = len(binary_huffman)
     num_bits_in_table = len("".join(v[1] for v in table.values()))
-    print(num_bits_in_table)
     table_size = (len(table)*8) + num_bits_in_table
     total_bit_size = table_size + new_num_bits
 
