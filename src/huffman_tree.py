@@ -13,7 +13,7 @@ class HuffmanTree:
     def encode(self, message: str) -> tuple[str, dict]:
         result = ""
         for char in message:
-            code = self.table[char]
+            code = self.table[char][1]
             result += code
         return (result, self.table)
 
@@ -36,7 +36,7 @@ class HuffmanTree:
             if node:
                 traverse(node.left, path=(path + "0"))
                 if node.char:
-                    result[node.char] = path
+                    result[node.char] = (node.freq, path)
                 traverse(node.right, path=(path + "1"))
             return result
         traverse(self._root)
