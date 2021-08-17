@@ -5,8 +5,8 @@ from node import Node
 
 class HuffmanTree:
 
-    def __init__(self, pairs: dict):
-        self._nodes = self._create_nodes(pairs)
+    def __init__(self, frequency: dict[str, int]):
+        self._nodes = self._create_nodes(frequency)
         self._root = self._build_tree()
         self.table = self._build_table()
 
@@ -17,8 +17,8 @@ class HuffmanTree:
             result += code
         return (result, self.table)
 
-    def _create_nodes(self, pairs: dict) -> list:
-        return list(Node(k, v) for k, v in pairs.items())
+    def _create_nodes(self, frequency: dict[str, int]) -> list:
+        return list(Node(k, v) for k, v in frequency.items())
 
     def _build_tree(self) -> Node:
         heapq.heapify(self._nodes)

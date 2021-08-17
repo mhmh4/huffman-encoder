@@ -1,2 +1,2 @@
 clear
-python3 src/main.py src/input.txt
+python3 src/main.py input/message.txt
