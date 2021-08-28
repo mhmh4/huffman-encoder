@@ -34,7 +34,7 @@ $ cd huffman-encoder
 $ echo -n 'BCCABBDDAECCBBAEDDCC' > message.txt
 ```
 
-#### From the repository's root, run `main.py` specifying `message.txt`'s path
+#### From the repository's root, run `main.py` specifying `message.txt`'s path as a command line argument.
 
 ```bash
 $ python3 src/main.py input/message.txt
