@@ -22,11 +22,17 @@ def ascii_string_to_binary(s: str) -> str:
 
 def create_results_file(results: list) -> None:
     with open("output/results.txt", "w") as f:
+        f.write("ASCII\n---\n")
+        finished_ascii = False
         for r in results:
             if r:
                 f.write(f"{r[0]}: {r[1]}\n")
             else:
-                f.write("\n")
+                if not finished_ascii:
+                    f.write("\nHuffman coding\n---\n")
+                    finished_ascii = True
+                else:
+                    f.write("\n") # just skip a line
 
 
 def main():
@@ -60,16 +66,16 @@ def main():
     # to make the output file easier to read, `None` will be used to
     # write new line characters
     results = [
-        ("original message", message),
-        ("message in binary", binary_original),
-        ("message bit size", original_num_bits),
+        ("message", message),
+        ("message (binary)", binary_original),
+        ("bit size", original_num_bits),
         None,
-        ("message in binary using huffman coding", binary_huffman),
-        ("new bit size", new_num_bits),
+        ("huffman encoded message (binary)", binary_huffman),
+        ("bit size", new_num_bits),
         ("table size", table_size),
         ("total size", total_bit_size),
         None,
-        ("compression results", f"{compression_ratio:0.2%} compression")
+        ("result", f"{compression_ratio:0.2%} compression")
     ]
 
     create_results_file(results)
