@@ -6,9 +6,9 @@ Huffman coding is an algorithm that's used for lossless text compression. In a n
 
 This program uses that technique to show how much data can be saved for a particular message that the user will input. It may not always be the case that the algorithm will save more space than the original amount since it needs to store additional information apart from the encoded message.
 
-<div style="text-align: center">
-<img width="40%" src="assets/diagram.svg">
-<p>The Huffman tree for the message, 'BCCABBDDAECCBBAEDDCC'</p>
+<div align="center">
+  <img width="40%" src="assets/diagram.svg">
+  <p>The Huffman tree for the message, 'BCCABBDDAECCBBAEDDCC'</p>
 </div>
 
 ## Requirements
