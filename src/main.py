@@ -70,7 +70,7 @@ def main():
         ("message (binary)", binary_original),
         ("bit size", original_num_bits),
         None,
-        ("huffman encoded message (binary)", binary_huffman),
+        ("message (binary)", binary_huffman),
         ("bit size", new_num_bits),
         ("table size", table_size),
         ("total size", total_bit_size),

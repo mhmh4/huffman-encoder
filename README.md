@@ -40,7 +40,7 @@ $ echo -n 'BCCABBDDAECCBBAEDDCC' > message.txt
 $ python3 src/main.py input/message.txt
 ```
 
-#### Within the `output` directory, there will be a `results.txt` file that contains the results of Huffman coding used on `message.txt`'s data.
+#### Within the `output` directory, there will be a `results.txt` file that contains the results of Huffman coding used on `message.txt`'s contents.
 
 ```
 $ cat output/results.txt
@@ -52,7 +52,7 @@ bit size: 160
 
 Huffman coding
 ---
-huffman encoded message (binary): 011111101010100001011001111010110110000001111
+message (binary): 011111101010100001011001111010110110000001111
 bit size: 45
 table size: 52
 total size: 97
