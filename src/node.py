@@ -1,5 +1,9 @@
 class Node:
-    def __init__(self, char=None, freq=0, left=None, right=None):
+    def __init__(self, 
+                 char: str = None, 
+                 freq: int = 0, 
+                 left: "Node" = None, 
+                 right: "Node" = None):
         self.char = char
         self.freq = freq
         self.left = left
