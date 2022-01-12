@@ -32,6 +32,7 @@ class HuffmanTree:
 
     def _build_table(self) -> dict:
         result = {}
+
         def traverse(node, path=""):
             if node:
                 traverse(node.left, path=(path + "0"))
@@ -39,5 +40,6 @@ class HuffmanTree:
                     result[node.char] = (node.freq, path)
                 traverse(node.right, path=(path + "1"))
             return result
+
         traverse(self._root)
         return result

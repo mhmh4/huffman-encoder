@@ -32,7 +32,7 @@ def create_results_file(results: list) -> None:
                     f.write("\nHuffman coding\n---\n")
                     finished_ascii = True
                 else:
-                    f.write("\n") # just skip a line
+                    f.write("\n")  # just skip a line
 
 
 def main():
@@ -58,25 +58,19 @@ def main():
     binary_huffman, table = ht.encode(message)
     new_num_bits = len(binary_huffman)
     num_bits_in_table = len("".join(v[1] for v in table.values()))
-    table_size = (len(table)*8) + num_bits_in_table
+    table_size = (len(table) * 8) + num_bits_in_table
     total_bit_size = table_size + new_num_bits
 
     compression_ratio = total_bit_size / original_num_bits
 
     # to make the output file easier to read, `None` will be used to
     # write new line characters
-    results = [
-        ("message", message),
-        ("message (binary)", binary_original),
-        ("bit size", original_num_bits),
-        None,
-        ("message (binary)", binary_huffman),
-        ("bit size", new_num_bits),
-        ("table size", table_size),
-        ("total size", total_bit_size),
-        None,
-        ("result", f"{compression_ratio:0.2%} compression")
-    ]
+    results = [("message", message), ("message (binary)", binary_original),
+               ("bit size", original_num_bits), None,
+               ("message (binary)", binary_huffman),
+               ("bit size", new_num_bits), ("table size", table_size),
+               ("total size", total_bit_size), None,
+               ("result", f"{compression_ratio:0.2%} compression")]
 
     create_results_file(results)
 
