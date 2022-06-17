@@ -2,75 +2,83 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-public class HuffmanTree
-{
+public class HuffmanTree {
+
     private HuffmanNode root = null;
-    private HashMap<Character, String> encodingTable = new HashMap<>();
-    private String message = "";
-    private String compressedBinaryString = "";
 
-    public HashMap<Character, String> getEncodingTable() {
-        return encodingTable;
-    }
+    private String message;
+    private String compressedBinaryMessage ;
 
-//    public int getEncodingTableSize() {}
+    // The table consisting of the new codes each character will be mapped to.
+    private final HashMap<Character, String> encodingTable = new HashMap<>();
 
-    public HuffmanTree(String message)
-    {
+    public HuffmanTree() {}
+
+    public String compress(String message) {
+
         this.message = message;
-        HashMap<Character, Integer> frequencyMap = buildFrequencyTable(message);
-        ArrayList<HuffmanNode> huffmanNodes = createNodes(frequencyMap);
+
+        HashMap<Character, Integer> frequencyTable = createFrequencyTable(message);
+        ArrayList<HuffmanNode> huffmanNodes = createNodes(frequencyTable);
 
         buildTree(huffmanNodes);
-        buildEncodingTree(this.root, "");
 
-        System.out.println(encodingTable);
+
+        buildEncodingTable(this.root, null);
+
         System.out.println(root);
-
-//        System.out.println();
-
-        var s = compressString();
-        System.out.println(s);
+        System.out.println(encodingTable);
+        return generateCompressedBinaryMessage();
     }
 
-    private String compressString()
-    {
+    private String generateCompressedBinaryMessage() {
+
         var output = new StringBuilder();
+
         for (char c : message.toCharArray()) {
             String newCode = encodingTable.get(c);
             output.append(newCode);
         }
+
         return output.toString();
     }
 
-    private HashMap<Character, Integer> buildFrequencyTable(String str)
-    {
-        var frequency = new HashMap<Character, Integer>();
+    private HashMap<Character, Integer> createFrequencyTable(String str) {
+
+        var frequencyTable = new HashMap<Character, Integer>();
+
         for (char c : str.toCharArray()) {
-            frequency.put(c, frequency.getOrDefault(c, 0) + 1);
+            frequencyTable.put(c, frequencyTable.getOrDefault(c, 0) + 1);
         }
-        return frequency;
+
+        return frequencyTable;
     }
 
-    private ArrayList<HuffmanNode> createNodes(HashMap<Character, Integer> frequency)
-    {
+    private ArrayList<HuffmanNode> createNodes(HashMap<Character, Integer> frequencyTable) {
+
         var nodes = new ArrayList<HuffmanNode>();
 
-        for (var entry : frequency.entrySet()) {
-            var huffmanNode = new HuffmanNode(entry.getKey(), entry.getValue());
+        for (var entry : frequencyTable.entrySet()) {
+
+            char character = entry.getKey();
+            int frequency = entry.getValue();
+
+            var huffmanNode = new HuffmanNode(character, frequency);
             nodes.add(huffmanNode);
         }
 
         return nodes;
     }
 
-    private void buildTree(ArrayList<HuffmanNode> nodes)
-    {
-        var pq = new PriorityQueue<HuffmanNode>(nodes);
+    private void buildTree(ArrayList<HuffmanNode> nodes) {
+
+        var pq = new PriorityQueue<>(nodes);
 
         while (pq.size() > 1) {
+
             HuffmanNode smallest1 = pq.poll();
             HuffmanNode smallest2 = pq.poll();
+
             HuffmanNode parent = new HuffmanNode(smallest1, smallest2);
             pq.add(parent);
         }
@@ -78,24 +86,41 @@ public class HuffmanTree
         this.root = pq.poll();
     }
 
-    /**
-     * Performs a DFS on the HuffmanTree while keeping track of the path.
-     *
-     * The path is determined by whether the left or right child is visited.
-     * If it goes left, then the bit 0 is added to the path, if right, then 1.
-     * Once a HuffmanNode that contains a character is visited, that character
-     * is stored as a key in the "encodingTable" with the path as the value.
-     */
-    private void buildEncodingTree(HuffmanNode node, String path)
-    {
-        if (node == null) return;
+    private void buildEncodingTable(HuffmanNode node, String path) {
 
-        buildEncodingTree(node.visitLeft(), path + "0");
+        if (node == null) { return; }
+        if (path == null) { path = ""; }
 
-        if (node.isCharacterNode()) {
-            this.encodingTable.put(node.getCharacter(), path);
+        buildEncodingTable(node.getLeft(), path + '0');
+
+        if (node.containsCharacter()) {
+            encodingTable.put(node.getCharacter(), path);
         }
 
-        buildEncodingTree(node.visitRight(), path + "1");
+        buildEncodingTable(node.getRight(), path + '1');
+    }
+
+    public HashMap<Character, String> getEncodingTable() {
+        return encodingTable;
+    }
+
+    public int getEncodingTableBitSize() {
+
+        final int totalCodesLength = encodingTable.values()
+                .stream()
+                .mapToInt(String::length)
+                .sum();
+
+        final int NUM_BITS_IN_CHAR = 8;
+        final int numChars = encodingTable.keySet().size();
+
+        final int totalCharsBitSize = NUM_BITS_IN_CHAR * numChars;
+
+        return totalCodesLength + totalCharsBitSize;
+    }
+
+    @Override
+    public String toString() {
+        return root.toString();
     }
 }
