@@ -3,9 +3,9 @@ import java.net.URL;
 
 public class Main {
 
-    /** Converts a string to a binary string. Ex. "Hi" -> 0100100001101001 */
-    public static String convertToBinary(final String str)
-    {
+    // Converts a string to a binary string (e.g. "Hi" -> 0100100001101001)
+    public static String convertToBinary(final String str) {
+
         final byte[] bytes = str.getBytes();
         final StringBuilder binaryString = new StringBuilder();
 
@@ -21,8 +21,7 @@ public class Main {
         return binaryString.toString();
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
 //        if (args.length < 2) {
 //            System.err.println("Error: ...");
 //            System.exit(1);
@@ -56,9 +55,17 @@ public class Main {
 
         final String message = String.valueOf(sb);
         final String messageBinary = convertToBinary(message);
-        final int numBitsBinaryMessage = messageBinary.length();
+        final int numBitsMessageBinary = messageBinary.length();
 
-        HuffmanTree huf = new HuffmanTree(message);
+        HuffmanTree huf = new HuffmanTree();
+        String compressedMessageBinary = huf.compress(message);
+
+        var a = compressedMessageBinary.length();
+        var b = huf.getEncodingTableBitSize();
+        System.out.println((a + b));
+
+        System.out.println(compressedMessageBinary);
+//        huf
 
         System.out.println("Message: " + message);
         System.out.println("Message in binary: " + messageBinary);
