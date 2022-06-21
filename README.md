@@ -8,7 +8,7 @@ This program uses that technique to show how much data can be saved for a partic
 
 <div align="center">
   <img width="40%" src="assets/diagram.svg">
-  <p>The Huffman tree for the message, 'BCCABBDDAECCBBAEDDCC'</p>
+  <p>The Huffman tree for the message 'BCCABBDDAECCBBAEDDCC'</p>
 </div>
 
 ## Requirements
@@ -17,30 +17,30 @@ This program uses that technique to show how much data can be saved for a partic
 
 ## Getting started
 
-#### Download the repository using Git or download the zip file.
+##### Download the repository using Git or download the zip file.
 ```bash
 $ git clone https://github.com/u06/huffman-encoder.git
 ```
 
-#### `cd` into it.
+##### Navigate within the directory.
 
 ```
 $ cd huffman-encoder
 ```
 
-#### Within the `input` directory, enter some text within `message.txt`.
+##### Within the `input` directory, enter some text within `message.txt`.
 
 ```bash
 $ echo -n 'BCCABBDDAECCBBAEDDCC' > message.txt
 ```
 
-#### From the repository's root, run `main.py` specifying `message.txt`'s path as a command line argument.
+##### From the repository's root, run `main.py` specifying `message.txt`'s path as a command line argument.
 
 ```bash
 $ python3 src/main.py input/message.txt
 ```
 
-#### Within the `output` directory, there will be a `results.txt` file that contains the results of Huffman coding used on `message.txt`'s contents.
+##### Within the `output` directory, there will be a `results.txt` file that contains the results of Huffman coding used on `message.txt`'s contents.
 
 ```
 $ cat output/results.txt
