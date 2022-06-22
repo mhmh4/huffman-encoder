@@ -1,48 +1,29 @@
-import java.io.*;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
-public class Main {
+public class Main
+{
 
-    // Converts a string to a binary string (e.g. "Hi" -> 0100100001101001)
-    public static String convertToBinary(final String str) {
-
-        final byte[] bytes = str.getBytes();
-        final StringBuilder binaryString = new StringBuilder();
-
-        for (final byte b : bytes) {
+    public static String toBinary(String s)
+    {
+        var binary = new StringBuilder();
+        for (byte b : s.getBytes()) {
             int value = b;
             for (int i = 0; i < 8; i++) {
-                binaryString.append((value & 128) == 0 ? 0 : 1);
+                binary.append((value & 128) == 0 ? 0 : 1);
                 value <<= 1;
             }
-            // binaryString.append(' ');
         }
-
-        return binaryString.toString();
+        return binary.toString();
     }
 
-    public static void main(String[] args) {
-//        if (args.length < 2) {
-//            System.err.println("Error: ...");
-//            System.exit(1);
-//        }
-//        args[1] = "input/message.txt";
-        URL url = null;
+    public static String getFileContents(File f)
+    {
+        final StringBuilder sb = new StringBuilder();
         try {
-            url = Main.class.getResource("input/message.txt");
-        } catch (NullPointerException npe) {
-            System.err.printf("Error: cannot locate path '%s'", args[1]);
-        }
-        File f = new File(url.getPath());
-
-        if (!f.exists()) {
-            //
-        }
-
-        StringBuilder sb = new StringBuilder();
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(f.getPath()));
+            BufferedReader br = new BufferedReader(new FileReader(f));
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
@@ -50,28 +31,43 @@ public class Main {
             br.close();
         } catch (IOException e) {
             System.err.printf("Error: %s", e.getMessage());
-            return;
+            System.exit(1);
         }
+        return sb.toString();
+    }
 
-        final String message = String.valueOf(sb);
-        final String messageBinary = convertToBinary(message);
+    public static void main(String[] args)
+    {
+        final File inputFile = new File("input.txt");
+        String content = getFileContents(inputFile);
+
+        final String message = String.valueOf(content);
+        final String messageBinary = toBinary(message);
         final int numBitsMessageBinary = messageBinary.length();
 
-        HuffmanTree huf = new HuffmanTree();
-        String compressedMessageBinary = huf.compress(message);
+        final HuffmanTree huf = new HuffmanTree();
+        final String compressedMessageBinary = huf.compress(message);
+
+        final int numBitsMessageBinaryCompressed = compressedMessageBinary.length();
 
         var a = compressedMessageBinary.length();
         var b = huf.getEncodingTableBitSize();
-        System.out.println((a + b));
+        System.out.println(a + b);
 
         System.out.println(compressedMessageBinary);
-//        huf
 
         System.out.println("Message: " + message);
-        System.out.println("Message in binary: " + messageBinary);
-//        System.out.println("Message: " + message);
 
-//        System.out.println(characterFrequency(message));
+        System.out.println();
+
+        System.out.println("Message in binary: " + messageBinary);
+        System.out.printf("Size of message in binary: %d bits\n", numBitsMessageBinary);
+
+        System.out.println("Message in binary compressed: " + compressedMessageBinary);
+        System.out.printf("Size of message in compressed binary: %d bits\n", numBitsMessageBinaryCompressed);
+
+        // System.out.println("Message: " + message);
+        // System.out.println(characterFrequency(message));
     }
 
 }
