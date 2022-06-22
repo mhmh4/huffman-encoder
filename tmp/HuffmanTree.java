@@ -2,49 +2,44 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-public class HuffmanTree {
-
+public class HuffmanTree
+{
     private HuffmanNode root = null;
 
     private String message;
-    private String compressedBinaryMessage ;
 
-    // The table consisting of the new codes each character will be mapped to.
+    // New binary codes each of `message`'s character will be mapped to.
     private final HashMap<Character, String> encodingTable = new HashMap<>();
 
     public HuffmanTree() {}
 
-    public String compress(String message) {
-
+    public String compress(String message)
+    {
         this.message = message;
 
         HashMap<Character, Integer> frequencyTable = createFrequencyTable(message);
         ArrayList<HuffmanNode> huffmanNodes = createNodes(frequencyTable);
 
         buildTree(huffmanNodes);
+        buildEncodingTable(root, null);
 
-
-        buildEncodingTable(this.root, null);
-
-        System.out.println(root);
-        System.out.println(encodingTable);
         return generateCompressedBinaryMessage();
     }
 
-    private String generateCompressedBinaryMessage() {
-
+    private String generateCompressedBinaryMessage()
+    {
         var output = new StringBuilder();
 
         for (char c : message.toCharArray()) {
-            String newCode = encodingTable.get(c);
-            output.append(newCode);
+            String code = encodingTable.get(c);
+            output.append(code);
         }
 
         return output.toString();
     }
 
-    private HashMap<Character, Integer> createFrequencyTable(String str) {
-
+    private HashMap<Character, Integer> createFrequencyTable(String str)
+    {
         var frequencyTable = new HashMap<Character, Integer>();
 
         for (char c : str.toCharArray()) {
@@ -54,12 +49,11 @@ public class HuffmanTree {
         return frequencyTable;
     }
 
-    private ArrayList<HuffmanNode> createNodes(HashMap<Character, Integer> frequencyTable) {
-
+    private ArrayList<HuffmanNode> createNodes(HashMap<Character, Integer> frequencyTable)
+    {
         var nodes = new ArrayList<HuffmanNode>();
 
         for (var entry : frequencyTable.entrySet()) {
-
             char character = entry.getKey();
             int frequency = entry.getValue();
 
@@ -70,12 +64,11 @@ public class HuffmanTree {
         return nodes;
     }
 
-    private void buildTree(ArrayList<HuffmanNode> nodes) {
-
+    private void buildTree(ArrayList<HuffmanNode> nodes)
+    {
         var pq = new PriorityQueue<>(nodes);
 
         while (pq.size() > 1) {
-
             HuffmanNode smallest1 = pq.poll();
             HuffmanNode smallest2 = pq.poll();
 
@@ -86,10 +79,10 @@ public class HuffmanTree {
         this.root = pq.poll();
     }
 
-    private void buildEncodingTable(HuffmanNode node, String path) {
-
-        if (node == null) { return; }
-        if (path == null) { path = ""; }
+    private void buildEncodingTable(HuffmanNode node, String path)
+    {
+        if (node == null) return;
+        if (path == null) path = "";
 
         buildEncodingTable(node.getLeft(), path + '0');
 
@@ -100,27 +93,23 @@ public class HuffmanTree {
         buildEncodingTable(node.getRight(), path + '1');
     }
 
-    public HashMap<Character, String> getEncodingTable() {
-        return encodingTable;
-    }
+    public HashMap<Character, String> getEncodingTable() { return this.encodingTable; }
 
-    public int getEncodingTableBitSize() {
-
-        final int totalCodesLength = encodingTable.values()
+    public int getEncodingTableBitSize()
+    {
+        final int totalBinaryStringsBitSize = encodingTable.values()
                 .stream()
                 .mapToInt(String::length)
                 .sum();
 
         final int NUM_BITS_IN_CHAR = 8;
         final int numChars = encodingTable.keySet().size();
-
         final int totalCharsBitSize = NUM_BITS_IN_CHAR * numChars;
 
-        return totalCodesLength + totalCharsBitSize;
+        return totalBinaryStringsBitSize + totalCharsBitSize;
     }
 
     @Override
-    public String toString() {
-        return root.toString();
-    }
+    public String toString() { return root.toString(); }
+
 }

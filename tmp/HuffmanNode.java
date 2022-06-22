@@ -1,5 +1,5 @@
-public class HuffmanNode implements Comparable<HuffmanNode> {
-
+public class HuffmanNode implements Comparable<HuffmanNode>
+{
     // Denotes a HuffmanNode doesn't contain a character
     private static final char NULL_CHARACTER = '\u0000';
 
@@ -11,13 +11,15 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
     private HuffmanNode left = null;
     private HuffmanNode right = null;
 
-    public HuffmanNode(char character, int frequency) {
+    public HuffmanNode(char character, int frequency)
+    {
         this.character = character;
         this.frequency = frequency;
     }
 
     // Parent constructor
-    public HuffmanNode(HuffmanNode left, HuffmanNode right) {
+    public HuffmanNode(HuffmanNode left, HuffmanNode right)
+    {
         this.character = NULL_CHARACTER;
         this.frequency = left.frequency + right.frequency;
         this.left = left;
@@ -26,7 +28,8 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
 
     public char getCharacter() { return this.character; }
 
-    public boolean containsCharacter() {
+    public boolean containsCharacter()
+    {
         return this.character != NULL_CHARACTER;
     }
 
@@ -34,12 +37,14 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
     public final HuffmanNode getRight() { return this.right; }
 
     @Override
-    public int compareTo(HuffmanNode other) {
+    public int compareTo(HuffmanNode other)
+    {
         return Integer.compare(this.frequency, other.frequency);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "HuffmanNode{" +
                 "character=" + character +
                 ", frequency=" + frequency +
@@ -47,4 +52,5 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
                 ", right=" + right +
                 '}';
     }
+
 }
