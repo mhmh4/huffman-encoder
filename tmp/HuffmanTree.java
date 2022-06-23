@@ -93,8 +93,6 @@ public class HuffmanTree
         buildEncodingTable(node.getRight(), path + '1');
     }
 
-    public HashMap<Character, String> getEncodingTable() { return this.encodingTable; }
-
     public int getEncodingTableBitSize()
     {
         final int totalBinaryStringsBitSize = encodingTable.values()
