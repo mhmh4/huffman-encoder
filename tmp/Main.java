@@ -1,11 +1,7 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Main
 {
-
     public static String toBinary(String s)
     {
         var binary = new StringBuilder();
@@ -21,9 +17,9 @@ public class Main
 
     public static String getFileContents(File f)
     {
-        final StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(f));
+            var br = new BufferedReader(new FileReader(f));
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
@@ -38,36 +34,54 @@ public class Main
 
     public static void main(String[] args)
     {
-        final File inputFile = new File("input.txt");
-        String content = getFileContents(inputFile);
+        var input = new File("input/message.txt");
 
-        final String message = String.valueOf(content);
-        final String messageBinary = toBinary(message);
-        final int numBitsMessageBinary = messageBinary.length();
+        if (!input.exists()) {
+            System.err.printf("Error: no such file '%s'\n", input);
+            System.exit(1);
+        }
 
-        final HuffmanTree huf = new HuffmanTree();
-        final String compressedMessageBinary = huf.compress(message);
+        String message = getFileContents(input);
+        String messageBinary = toBinary(message);
+        int numBitsMessageBinary = messageBinary.length();
 
-        final int numBitsMessageBinaryCompressed = compressedMessageBinary.length();
+        var huf = new HuffmanTree();
+        String compressedMessageBinary = huf.compress(message);
 
-        var a = compressedMessageBinary.length();
-        var b = huf.getEncodingTableBitSize();
-        System.out.println(a + b);
+        int numBitsMessageBinaryCompressed = compressedMessageBinary.length();
+        int encodingTableBitSize = huf.getEncodingTableBitSize();
+        int totalBitSizeCompressedBinary = numBitsMessageBinaryCompressed + encodingTableBitSize;
 
-        System.out.println(compressedMessageBinary);
+        double compressionRatio = (double)totalBitSizeCompressedBinary / numBitsMessageBinary;
+        int compressionRatioPercentage = (int)Math.round(compressionRatio * 100);
+        int smallerPercentage = 100 - compressionRatioPercentage;
 
-        System.out.println("Message: " + message);
+        var output = new File("output/results.txt");
 
-        System.out.println();
+        if (!output.exists()) {
+            System.err.printf("Error: no such file '%s'\n", input);
+            System.exit(1);
+        }
 
-        System.out.println("Message in binary: " + messageBinary);
-        System.out.printf("Size of message in binary: %d bits\n", numBitsMessageBinary);
-
-        System.out.println("Message in binary compressed: " + compressedMessageBinary);
-        System.out.printf("Size of message in compressed binary: %d bits\n", numBitsMessageBinaryCompressed);
-
-        // System.out.println("Message: " + message);
-        // System.out.println(characterFrequency(message));
+        BufferedWriter bw;
+        try {
+            bw = new BufferedWriter(new FileWriter(output));
+            bw.write("Message: " + message + '\n');
+            bw.write("Binary message: " + messageBinary + '\n');
+            bw.write("Number of bits in binary message: " + numBitsMessageBinary + '\n');
+            bw.write('\n');
+            bw.write("Compressed binary message: " + compressedMessageBinary + '\n');
+            bw.write("Number of bits in compressed binary message: " + numBitsMessageBinaryCompressed + '\n');
+            bw.write("Bit size of Huffman encoding table: " + encodingTableBitSize + '\n');
+            bw.write('\n');
+            bw.write("Total number of bits after compression: " + totalBitSizeCompressedBinary + '\n');
+            bw.write('\n');
+            bw.write("Compressed message is " + smallerPercentage + "% smaller\n");
+            bw.close();
+        } catch (IOException e) {
+            System.err.printf("Error: %s", e.getMessage());
+            System.exit(1);
+        }
     }
 
 }
