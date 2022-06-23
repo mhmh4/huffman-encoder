@@ -34,7 +34,7 @@ public class Main
 
     public static void main(String[] args)
     {
-        var input = new File("input/message.txt");
+        var input = new File("../input/message.txt");
 
         if (!input.exists()) {
             System.err.printf("Error: no such file '%s'\n", input);
@@ -56,7 +56,7 @@ public class Main
         int compressionRatioPercentage = (int)Math.round(compressionRatio * 100);
         int smallerPercentage = 100 - compressionRatioPercentage;
 
-        var output = new File("output/results.txt");
+        var output = new File("../output/results.txt");
 
         if (!output.exists()) {
             System.err.printf("Error: no such file '%s'\n", input);
